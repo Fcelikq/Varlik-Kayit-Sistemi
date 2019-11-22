@@ -28,7 +28,7 @@ DefaultTableModel model;
             ArrayList<assetTable>assets=getAssets();
             for (assetTable assettable:assets){
                 Object[] row = {assettable.getAssetid(),assettable.getAssetname(),
-                assettable.getAssetmark(),assettable.getAssetmodel(),assettable.getAssetpiece()};
+                assettable.getAssetmark(),assettable.getAssetmodel(),assettable.getAssetdepartment(),assettable.getAssetuser()};
                 model.addRow(row);
             }
         } catch (SQLException ex) {
@@ -52,7 +52,8 @@ DefaultTableModel model;
                          resultSet.getString("assetName"),
                          resultSet.getString("assetMark"),
                          resultSet.getString("assetModel"),
-                         resultSet.getInt("assetPiece")
+                         resultSet.getString("assetDepartment"),
+                         resultSet.getString("assetUser")
                  ));
                  }
               
@@ -79,12 +80,14 @@ DefaultTableModel model;
         txtName = new javax.swing.JTextField();
         txtMark = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
-        txtPiece = new javax.swing.JTextField();
+        txtDepartment = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAsset = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         lblSearch = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
+        txtUser = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,25 +104,30 @@ DefaultTableModel model;
 
         jLabel3.setText("Model");
 
-        jLabel4.setText("Adet");
+        jLabel4.setText("Department");
 
         tblAsset.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "assetID", "assetName", "assetMark", "asetModel", "assetPiece"
+                "assetID", "assetName", "assetMark", "asetModel", "assetDepartment", "assetUser"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        tblAsset.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAssetMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblAsset);
@@ -139,24 +147,28 @@ DefaultTableModel model;
             }
         });
 
+        jLabel5.setText("User");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtName)
-                    .addComponent(txtPiece)
+                    .addComponent(txtDepartment)
                     .addComponent(txtMark)
                     .addComponent(txtModel)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(txtUser))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -166,7 +178,7 @@ DefaultTableModel model;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                .addComponent(lblSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
@@ -194,9 +206,13 @@ DefaultTableModel model;
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAdd))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -214,15 +230,17 @@ DefaultTableModel model;
             PreparedStatement statement=null;
             try{
                  connection = dBhelper.getConnection();
-                 String sql="insert into assettable(assetName,  assetMark,  assetModel,  assetPiece)values (?,?,?,?)";
+                 String sql="insert into assettable(assetName,  assetMark,  assetModel,  assetDepartment,  assetUser)values (?,?,?,?,?)";
                  statement = connection.prepareStatement(sql);
                  statement.setString(1, txtName.getText());
                  statement.setString(2, txtModel.getText());
                  statement.setString(3, txtMark.getText());
-                 statement.setInt(4,Integer.valueOf(txtPiece.getText())) ;
+                 statement.setString(4, txtDepartment.getText());
+                 statement.setString(5, txtUser.getText());
                  int result = statement.executeUpdate();
                     populateTable();
                     clearFields();
+                     JOptionPane.showMessageDialog(null, "Varlik kayit islemi basarili.");
            } catch(SQLException exception){
                 dBhelper.showErrorMessage(exception);
             }finally{
@@ -275,11 +293,16 @@ try{
             }
             }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void tblAssetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAssetMouseClicked
+        
+    }//GEN-LAST:event_tblAssetMouseClicked
          private void clearFields(){
              txtName.setText(null);
              txtMark.setText(null);
              txtModel.setText(null);
-             txtPiece.setText(null);
+             txtDepartment.setText(null);
+             txtUser.setText(null);
  
          }
     /**
@@ -301,13 +324,15 @@ try{
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JTable tblAsset;
+    private javax.swing.JTextField txtDepartment;
     private javax.swing.JTextField txtMark;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPiece;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

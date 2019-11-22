@@ -4,14 +4,16 @@ public class assetTable {
     private String assetname;
     private String assetmark;
     private String assetmodel;
-    private int assetpiece;
+    private String assetdepartment;
+    private String assetuser;
     
-    public assetTable(int assetid, String assetname, String assetmark, String assetmodel, int assetpiece) {
+    public assetTable(int assetid, String assetname, String assetmark, String assetmodel, String assetdepartment,String assetuser) {
          this.assetid = assetid;
         this.assetname = assetname;
         this.assetmark = assetmark;
         this.assetmodel = assetmodel;
-        this.assetpiece = assetpiece;
+        this.assetdepartment = assetdepartment;
+          this.assetuser = assetuser;
     }
     
     public int getAssetid() {
@@ -46,12 +48,19 @@ public class assetTable {
         this.assetmodel = assetmodel;
     }
 
-    public int getAssetpiece() {
-        return assetpiece;
+    public String getAssetdepartment() {
+        return assetdepartment;
     }
 
-    public void setAssetpiece(int assetpiece) {
-        this.assetpiece = assetpiece;
+    public void setAssetdepartment(String assetdepartment) {
+        this.assetdepartment = assetdepartment;
+    }
+      public String getAssetuser() {
+        return assetuser;
+    }
+
+    public void setAssetuser(String assetuser) {
+        this.assetuser = assetuser;
     }
 }
 
